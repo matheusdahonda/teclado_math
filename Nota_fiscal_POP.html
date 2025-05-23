@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>drid pytátopd 🔐</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    textarea {
+      width: 90%;
+      height: 100px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      padding: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .result {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background-color: #222;
+      padding: 10px;
+      border-radius: 5px;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>drid pytátopd 🔐</h1>
+  <textarea id="inputText" placeholder="Digite aqui..."></textarea><br/>
+  <button onclick="codificar()">Codificar</button>
+  <button onclick="decodificar()">Decodificar</button>
+  <div class="result" id="outputText"></div>
+
+  <script>
+    const layout = [
+      "qwertyuiop´[",
+      "asdfghjklç~]",
+      "zxcvbnm,.;"
+    ];
+
+    const letrasAcentuadas = "áàâãéèêíìîóòôõúùûÁÀÂÃÉÈÊÍÌÎÓÒÔÕÚÙÛ";
+
+    const mapaDireita = {};
+    const mapaEsquerda = {};
+
+    layout.forEach(linha => {
+      for (let i = 0; i < linha.length; i++) {
+        let atual = linha[i];
+        let prox = linha[i + 1] || atual;
+        let ant = linha[i - 1] || atual;
+        mapaDireita[atual] = prox;
+        mapaEsquerda[atual] = ant;
+        mapaDireita[atual.toUpperCase()] = prox.toUpperCase();
+        mapaEsquerda[atual.toUpperCase()] = ant.toUpperCase();
+      }
+    });
+
+    function codificar() {
+      const texto = document.getElementById('inputText').value;
+      let resultado = '';
+      for (let char of texto) {
+        if (letrasAcentuadas.includes(char)) {
+          resultado += char;
+        } else {
+          resultado += mapaDireita[char] || char;
+        }
+      }
+      document.getElementById('outputText').textContent = resultado;
+    }
+
+    function decodificar() {
+      const texto = document.getElementById('inputText').value;
+      let resultado = '';
+      for (let char of texto) {
+        if (letrasAcentuadas.includes(char)) {
+          resultado += char;
+        } else {
+          resultado += mapaEsquerda[char] || char;
+        }
+      }
+      document.getElementById('outputText').textContent = resultado;
+    }
+  </script>
+</body>
+</html>
